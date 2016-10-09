@@ -4,14 +4,10 @@ import ESTest.bean.IndexEntity;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,38 +21,42 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 public class ESTest {
     private static final Logger logger = LoggerFactory.getLogger(ESTest.class);
     public static void main(String[] args) {
-        String targetName = "商品";
-        String index = "testindex111";
+        String targetName = "家乐福";
+        String index = "testmapping";
         Client client = ESUtil.createClient();
-//        createIndex(client);
-        client.prepareGet();
+        createIndex(client,index);
+
+
+        /*client.prepareGet();
         String userName = "";
         String age = "";
 
         SearchRequestBuilder searchRequestBuilder = null;
         searchRequestBuilder = client.prepareSearch(index);
-        searchRequestBuilder.setQuery(QueryBuilders.matchQuery("description", targetName));
+        searchRequestBuilder.setQuery(QueryBuilders.matchQuery("title", targetName));
         SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
         SearchHit[] searchHits;
         searchHits = searchResponse.getHits().getHits();
 
         for (int i = 0; i < searchHits.length; i++) {
-            userName = searchHits[i].getSource().get("description").toString();
+            userName = searchHits[i].getSource().get("type").toString();
             age = searchHits[i].getSource().get("title").toString();
             System.out.println(String.format("name:%s, age:%s", userName, age));
         }
         System.out.println("###end");
-        client.close();
+        client.close();*/
     }
 
     /**
      * 创建不分词的index
      * @param client
      */
-    public static void createIndex(Client client) {
+    public static void createIndex(Client client,String indexName) {
 
-        String index="testindex111";
+        String index=indexName;
         client.admin().indices().prepareCreate(index).execute().actionGet();
+
+
 //        client.admin().indices().create(new CreateIndexRequest("productindex14")).actionGet();
         XContentBuilder mapping = null;
         try {
@@ -66,10 +66,8 @@ public class ESTest {
                     .startObject("properties")
                     .startObject("title").field("type", "string").field("index","not_analyzed").field("store", "yes").endObject()
                     .startObject("description").field("type", "string").field("index", "not_analyzed").endObject()
-                    .startObject("price").field("type", "double").endObject()
-                    .startObject("onSale").field("type", "boolean").endObject()
-                    .startObject("type").field("type", "integer").endObject()
-                    .startObject("createDate").field("type", "date").endObject()
+                    .startObject("price").field("type", "long").endObject()
+                    .startObject("type").field("type", "string").endObject()
                     .endObject()
                     .endObject()
                     .endObject();
