@@ -12,9 +12,17 @@
         <hadoop.version>2.2.0</hadoop.version>
         <es.version>2.4.1</es.version>
         <jackson.core.version>2.8.2</jackson.core.version>
+        <jest.version>2.0.2</jest.version>
     </properties>
 
     <dependencies>
+
+        <!-- es java client -->
+        <dependency>
+            <groupId>io.searchbox</groupId>
+            <artifactId>jest</artifactId>
+            <version>${jest.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
