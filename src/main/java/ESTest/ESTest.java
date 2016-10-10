@@ -108,6 +108,7 @@ public class ESTest extends MultiThreadService {
         }
     }
 
+    //es查询test
     public static void main(String[] args) {
         String targetName = "山东vCro4";
         String index = "searchanalysis121";

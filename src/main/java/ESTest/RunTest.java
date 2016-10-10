@@ -15,6 +15,8 @@ import java.util.List;
  * Created by zhipengwu on 16-10-10.
  */
 public class RunTest {
+
+    //创建不分词的索引, 并批量导入数据
     public static void main(String[] args) {
         ESTest esTest =new ESTest();
         BufferedReader br=null;
